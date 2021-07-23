@@ -1,0 +1,58 @@
+﻿@model ML.AlumnoMateria
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+<h2>Materias Asignadas</h2>
+<div class="row">
+    <div class="col-md-6">
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-addon">Nombre</span>
+            @Html.TextBoxFor(model => model.Alumno.Nombre, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-addon">Apellido Paterno</span>
+            @Html.TextBoxFor(model => model.Alumno.ApellidoPaterno, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-addon">Apellido Materno</span>
+            @Html.TextBoxFor(model => model.Alumno.ApellidoMaterno, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+</div>
+<a class="btn btn-default" href="@Url.Action("AlumnoGetAll", "AlumnoMateria")"><span class="glyphicon glyphicon-chevron-left"></span></a>
+<div class="container">
+    <div class="row">
+        <div style="float:right; margin-bottom:1rem;">
+            <a class="btn btn-success " href="@Url.Action("AlumnoMateriaGetNotAsignadasByIdAlumno", "AlumnoMateria", new { IdAlumno = Model.Alumno.IdAlumno })"><span>+</span></a>
+        </div>
+
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <td class="text-center">Eliminar</td>
+                    <td class="hidden">IdAlumnoMateria</td>
+                    <td class="hidden">IdAlumno</td>
+                    <td class="text-center">Nombre</td>
+                    <td class="text-center">Costo</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ML.AlumnoMateria alumnoMateria in Model.AlumnoMaterias)
+                    {
+                        <tr>
+                            <td class="text-center"><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "AlumnoMateria", new { IdAlumnoMateria = alumnoMateria.IdAlumnoMateria, IdAlumno = alumnoMateria.Alumno.IdAlumno })" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a></td>
+                            <td class="hidden">@alumnoMateria.IdAlumnoMateria</td>
+                            <td class="hidden">@alumnoMateria.Alumno.IdAlumno</td>
+                            <td class="text-center">@alumnoMateria.Materia.Nombre</td>
+                            <td class="text-center">@alumnoMateria.Materia.Costo</td>
+                        </tr>
+                    }           
+            </tbody>
+        </table>
+    </div>
+</div>
+

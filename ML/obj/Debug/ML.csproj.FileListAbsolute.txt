@@ -1,0 +1,4 @@
+C:\Users\digis\Documents\Celso Daniel Galeana Martinez\DGaleanaControl_Escolar\ML\bin\Debug\ML.dll
+C:\Users\digis\Documents\Celso Daniel Galeana Martinez\DGaleanaControl_Escolar\ML\bin\Debug\ML.pdb
+C:\Users\digis\Documents\Celso Daniel Galeana Martinez\DGaleanaControl_Escolar\ML\obj\Debug\ML.dll
+C:\Users\digis\Documents\Celso Daniel Galeana Martinez\DGaleanaControl_Escolar\ML\obj\Debug\ML.pdb

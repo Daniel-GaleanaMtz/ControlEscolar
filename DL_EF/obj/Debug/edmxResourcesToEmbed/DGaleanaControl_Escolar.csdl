@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Control_EscolarModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Materia">
+    <Key>
+      <PropertyRef Name="IdMateria" />
+    </Key>
+    <Property Name="IdMateria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Costo" Type="Decimal" Precision="18" Scale="0" />
+    <NavigationProperty Name="AlumnoMaterias" Relationship="Control_EscolarModel.FK_AlumnoMateria_Materia" FromRole="Materia" ToRole="AlumnoMateria" />
+  </EntityType>
+  <EntityContainer Name="Control_EscolarEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Materias" EntityType="Self.Materia" />
+    <FunctionImport Name="MateriaAdd">
+      <Parameter Name="Nombre" Mode="In" Type="String" />
+      <Parameter Name="Costo" Mode="In" Type="Decimal" />
+    </FunctionImport>
+    <FunctionImport Name="MateriaDelete">
+      <Parameter Name="IdMateria" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="MateriaGetAll" ReturnType="Collection(Control_EscolarModel.MateriaGetAll_Result)" />
+    <FunctionImport Name="MateriaGetById" ReturnType="Collection(Control_EscolarModel.MateriaGetById_Result)">
+      <Parameter Name="IdMateria" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="MateriaUpdate">
+      <Parameter Name="IdMateria" Mode="In" Type="Int32" />
+      <Parameter Name="Nombre" Mode="In" Type="String" />
+      <Parameter Name="Costo" Mode="In" Type="Decimal" />
+    </FunctionImport>
+    <EntitySet Name="Alumnoes" EntityType="Control_EscolarModel.Alumno" />
+    <EntitySet Name="AlumnoMaterias" EntityType="Control_EscolarModel.AlumnoMateria" />
+    <AssociationSet Name="FK_AlumnoMateria_Alumno" Association="Control_EscolarModel.FK_AlumnoMateria_Alumno">
+      <End Role="Alumno" EntitySet="Alumnoes" />
+      <End Role="AlumnoMateria" EntitySet="AlumnoMaterias" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AlumnoMateria_Materia" Association="Control_EscolarModel.FK_AlumnoMateria_Materia">
+      <End Role="Materia" EntitySet="Materias" />
+      <End Role="AlumnoMateria" EntitySet="AlumnoMaterias" />
+    </AssociationSet>
+    <FunctionImport Name="AlumnoMateriaGetAsignadasByIdAlumno" ReturnType="Collection(Control_EscolarModel.AlumnoMateriaGetAsignadasByIdAlumno_Result)">
+      <Parameter Name="IdAlumno" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="AlumnoMateriaDelete">
+      <Parameter Name="IdAlumnoMateria" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="AlumnoMateriaGetNotAsignadasByIdAlumno" ReturnType="Collection(Control_EscolarModel.AlumnoMateriaGetNotAsignadasByIdAlumno_Result)">
+      <Parameter Name="IdAlumno" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="AlumnoMateriaAdd">
+      <Parameter Name="IdAlumno" Mode="In" Type="Int32" />
+      <Parameter Name="IdMateria" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="MateriaGetAll_Result">
+    <Property Type="Int32" Name="IdMateria" Nullable="false" />
+    <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+    <Property Type="Decimal" Name="Costo" Nullable="true" Precision="18" Scale="0" />
+  </ComplexType>
+  <ComplexType Name="MateriaGetById_Result">
+    <Property Type="Int32" Name="IdMateria" Nullable="false" />
+    <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+    <Property Type="Decimal" Name="Costo" Nullable="true" Precision="18" Scale="0" />
+  </ComplexType>
+  <EntityType Name="Alumno">
+    <Key>
+      <PropertyRef Name="IdAlumno" />
+    </Key>
+    <Property Name="IdAlumno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ApellidoPaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ApellidoMaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="AlumnoMaterias" Relationship="Control_EscolarModel.FK_AlumnoMateria_Alumno" FromRole="Alumno" ToRole="AlumnoMateria" />
+  </EntityType>
+  <EntityType Name="AlumnoMateria">
+    <Key>
+      <PropertyRef Name="IdAlumnoMateria" />
+    </Key>
+    <Property Name="IdAlumnoMateria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdAlumno" Type="Int32" />
+    <Property Name="IdMateria" Type="Int32" />
+    <NavigationProperty Name="Alumno" Relationship="Control_EscolarModel.FK_AlumnoMateria_Alumno" FromRole="AlumnoMateria" ToRole="Alumno" />
+    <NavigationProperty Name="Materia" Relationship="Control_EscolarModel.FK_AlumnoMateria_Materia" FromRole="AlumnoMateria" ToRole="Materia" />
+  </EntityType>
+  <Association Name="FK_AlumnoMateria_Alumno">
+    <End Type="Control_EscolarModel.Alumno" Role="Alumno" Multiplicity="0..1" />
+    <End Type="Control_EscolarModel.AlumnoMateria" Role="AlumnoMateria" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alumno">
+        <PropertyRef Name="IdAlumno" />
+      </Principal>
+      <Dependent Role="AlumnoMateria">
+        <PropertyRef Name="IdAlumno" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AlumnoMateria_Materia">
+    <End Type="Control_EscolarModel.Materia" Role="Materia" Multiplicity="0..1" />
+    <End Type="Control_EscolarModel.AlumnoMateria" Role="AlumnoMateria" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Materia">
+        <PropertyRef Name="IdMateria" />
+      </Principal>
+      <Dependent Role="AlumnoMateria">
+        <PropertyRef Name="IdMateria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="AlumnoMateriaGetAsignadasByIdAlumno_Result">
+    <Property Type="Int32" Name="IdAlumnoMateria" Nullable="false" />
+    <Property Type="Int32" Name="IdAlumno" Nullable="true" />
+    <Property Type="Int32" Name="IdMateria" Nullable="true" />
+    <Property Type="String" Name="MateriaNombre" Nullable="true" MaxLength="50" />
+    <Property Type="Decimal" Name="Costo" Nullable="true" Precision="18" Scale="0" />
+    <Property Type="String" Name="AlumnoNombre" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="AlumnoMateriaGetNotAsignadasByIdAlumno_Result">
+    <Property Type="Int32" Name="IdMateria" Nullable="false" />
+    <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+    <Property Type="Decimal" Name="Costo" Nullable="true" Precision="18" Scale="0" />
+  </ComplexType>
+</Schema>

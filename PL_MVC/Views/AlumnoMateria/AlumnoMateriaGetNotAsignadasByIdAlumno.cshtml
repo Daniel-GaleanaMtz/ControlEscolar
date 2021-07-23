@@ -1,0 +1,57 @@
+﻿@model ML.AlumnoMateria
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+<h2>Materias Disponibles:</h2>
+<div class="row">
+    <div class="col-md-6">
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-addon">Nombre</span>
+            @Html.TextBoxFor(model => model.Alumno.Nombre, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-addon">Apellido Paterno</span>
+            @Html.TextBoxFor(model => model.Alumno.ApellidoPaterno, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-addon">Apellido Materno</span>
+            @Html.TextBoxFor(model => model.Alumno.ApellidoMaterno, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+</div>
+<a class="btn btn-default" href="@Url.Action("AlumnoMateriaGetAsignadasByIdAlumno", "AlumnoMateria", new { Model.Alumno.IdAlumno })"><span class="glyphicon glyphicon-chevron-left"></span></a>
+<div class="container">
+    <div class="row">
+        @using (Html.BeginForm("AlumnoMateriaGetNotAsignadasByIdAlumno", "AlumnoMateria", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <input type="hidden" value="@Model.Alumno.IdAlumno" name="IdAlumno" />
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <td class="text-center">Seleccionar</td>
+                    <td class="hidden">IdAlumnoMateria</td>
+                    <td class="text-center">Nombre</td>
+                </tr>
+            </thead>               
+            <tbody>               
+                    @foreach (ML.AlumnoMateria alumnoMateria in Model.AlumnoMaterias)
+                {
+                    <tr>
+                        <td class="text-center"><input type="checkbox" value="@alumnoMateria.Materia.IdMateria" name="AlumnoMaterias"></td>
+                        <td class="hidden">@alumnoMateria.IdAlumnoMateria</td>
+                        <td class="text-center">@alumnoMateria.Materia.Nombre</td>
+                    </tr>
+                }                              
+            </tbody>
+        </table>
+            <div class="text-center">
+            <input class="btn btn-success" type="submit" value="Guardar" />
+            </div>
+        }       
+    </div>
+</div>
+
